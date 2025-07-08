@@ -1,0 +1,27 @@
+name: sistema_evaluacion_itz_fullcompleto
+description: Sistema Evaluación ITZ Full con login, QR y menús
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  intl: ^0.20.2
+  qr_flutter: ^4.0.0
+  excel: ^2.1.0
+  path_provider: ^2.0.15
+  universal_html: ^2.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/ITZ.png
+    - assets/images/T.png
