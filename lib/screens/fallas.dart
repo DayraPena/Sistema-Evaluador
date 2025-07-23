@@ -129,11 +129,20 @@ class _FallasState extends State<Fallas> {
                   Center(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF34495E),
+                        backgroundColor:
+                            Color.fromARGB(255, 3, 39, 75), // Azul oscuro
+                        foregroundColor: Colors.white, // Texto blanco
                         padding:
                             EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+                        textStyle: TextStyle(fontSize: 16),
                       ),
-                      onPressed: _onAceptar,
+                      onPressed: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => DocenteMenu()),
+                          (Route<dynamic> route) => false,
+                        );
+                      },
                       child: Text('Aceptar'),
                     ),
                   ),

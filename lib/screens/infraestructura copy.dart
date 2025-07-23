@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'admin_menu.dart';
 
 class Infraestructura extends StatefulWidget {
   @override
@@ -6,135 +7,263 @@ class Infraestructura extends StatefulWidget {
 }
 
 class _InfraestructuraState extends State<Infraestructura> {
-  bool windows = false;
-  bool linux = false;
-  bool java = false;
-  bool autocat = false;
+  // Equipos disponibles
+  Map<String, bool> equipos = {
+    'Dell Inspiron 24 3477 AllinOne': false,
+    'GHIA Core i7, RAM:4/8, HD:1TB, SSD:': false,
+    'Gamer Core i7, RAM 16GB, SSD 512GB': false,
+  };
+
+  TextEditingController otroEquipoCtrl = TextEditingController();
+  TextEditingController otroSistemaCtrl = TextEditingController();
+  TextEditingController otroSoftwareCtrl = TextEditingController();
+
+  // Sistema operativo seleccionado
+  String? sistemaSeleccionado = '';
+
+  // Software (30 programas en columnas)
+  final List<List<String>> softwareColumnas = [
+    [
+      'Java c/Netbeans u otro',
+      'Tomcat 10.x',
+      'Android Studio',
+      'Framework de Java o Php',
+      'VSCode',
+      'Apache2/php/mysql en Linux',
+      'Jetbrains IDE Tools'
+    ],
+    [
+      'Teams, Classroom o Zoom',
+      'Moodle',
+      'Autocad 2025',
+      'SolidWorks 2025',
+      'Simio 17',
+      'Minitab 18',
+      'Octave',
+    ],
+    [
+      'SciLab',
+      'R Computación estadística',
+      'Visual Studio Community 2022',
+      'XAMPP',
+      'Postgresql 16',
+      'Mysql WorkBench',
+      'Editor DIA',
+    ],
+    [
+      'Docker de Bigdata',
+      'TC o DevCPP o Ensamblador',
+      'Xmind/Cmaptools/FreeMind',
+      'StarUML',
+      'Office 2016',
+      'LibreOffice 7',
+      'MV de PW / Jakarta',
+      'MV de nodeJS, expressJS',
+      'MV de Sistemas Operativos',
+    ]
+  ];
+
+  Map<String, bool> softwareSeleccionado = {};
+
+  @override
+  void initState() {
+    super.initState();
+    for (var columna in softwareColumnas) {
+      for (var item in columna) {
+        softwareSeleccionado[item] = false;
+      }
+    }
+  }
+
+  Widget buildCheckbox(String label, Map<String, bool> map) {
+    return CheckboxListTile(
+      dense: true,
+      title: Text(label),
+      controlAffinity: ListTileControlAffinity.leading,
+      contentPadding: EdgeInsets.zero,
+      value: map[label],
+      onChanged: (val) {
+        setState(() {
+          map[label] = val ?? false;
+        });
+      },
+    );
+  }
 
   void _onAceptar() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Datos de infraestructura registrados')),
+      SnackBar(content: Text('Datos de infraestructura registrados')),
     );
+    Future.delayed(Duration(milliseconds: 300), () {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => AdminMenu()),
+        (Route<dynamic> route) => false,
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: Color(0xFFF4EDF9),
       body: Column(
         children: [
-          Container(height: 20, color: const Color(0xFF34495E)),
+          Container(height: 10, color: Color(0xFF34495E)),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset('assets/images/T.png', width: 200),
+                Expanded(
+                  child: Column(
+                    children: const [
+                      Text(
+                        'TECNOLÓGICO NACIONAL DE MÉXICO',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      Text(
+                        'INSTITUTO TECNOLÓGICO DE ZACATEPEC',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        'Infraestructura',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 3, 32, 56),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 Image.asset('assets/images/ITZ.png', width: 100),
               ],
             ),
           ),
-          Column(
-            children: const [
-              Text(
-                'TECNOLÓGICO\nNACIONAL DE MÉXICO',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF2C3E50),
-                  height: 1.3,
-                ),
-              ),
-              SizedBox(height: 4),
-              Text(
-                'INSTITUTO TECNOLÓGICO DE ZACATEPEC',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF2C3E50),
-                ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'Infraestructura',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF34495E),
-                ),
-              ),
-              SizedBox(height: 20),
-            ],
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              'Elige el tipo de equipo que está disponible en el área que te asignaron:',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 13),
+            ),
           ),
-          Expanded(
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 10,
+            children:
+                equipos.keys.map((k) => buildCheckbox(k, equipos)).toList(),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Columna izquierda
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Text('Otro:'),
+                SizedBox(width: 10),
+                Expanded(child: TextField(controller: otroEquipoCtrl)),
+              ],
+            ),
+          ),
+          Divider(),
+
+          // SISTEMA OPERATIVO CON RADIO BUTTONS
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('Usaste el Sistema Operativo:'),
+                const SizedBox(width: 10),
+                ...['Windows', 'Linux'].map((sistema) => Row(
+                      children: [
+                        Radio<String>(
+                          value: sistema,
+                          groupValue: sistemaSeleccionado,
+                          onChanged: (val) {
+                            setState(() {
+                              sistemaSeleccionado = val;
+                              otroSistemaCtrl.clear(); // Limpia si no es 'Otro'
+                            });
+                          },
+                        ),
+                        Text(sistema),
+                        const SizedBox(width: 10),
+                      ],
+                    )),
+                Row(
                   children: [
-                    _buildCheck('Windows', windows, (val) {
-                      setState(() => windows = val);
-                    }),
-                    _buildCheck('Linux', linux, (val) {
-                      setState(() => linux = val);
-                    }),
-                  ],
-                ),
-                const SizedBox(width: 50),
-                // Columna derecha
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildCheck('Java', java, (val) {
-                      setState(() => java = val);
-                    }),
-                    _buildCheck('Autocat', autocat, (val) {
-                      setState(() => autocat = val);
-                    }),
+                    Radio<String>(
+                      value: 'Otro',
+                      groupValue: sistemaSeleccionado,
+                      onChanged: (val) {
+                        setState(() {
+                          sistemaSeleccionado = val;
+                        });
+                      },
+                    ),
+                    const Text('Otro:'),
+                    const SizedBox(width: 5),
+                    SizedBox(
+                      width: 120,
+                      child: TextField(
+                        controller: otroSistemaCtrl,
+                        enabled: sistemaSeleccionado == 'Otro',
+                        decoration: const InputDecoration(
+                          isDense: true,
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ],
             ),
           ),
+          Divider(),
+
+          // LISTA DE SOFTWARE EN COLUMNAS
+          Expanded(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(4, (i) {
+                  return Expanded(
+                    child: Column(
+                      children: softwareColumnas[i]
+                          .map((e) => buildCheckbox(e, softwareSeleccionado))
+                          .toList(),
+                    ),
+                  );
+                }),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              children: [
+                Text('Si no está en la lista, especifícalo:'),
+                SizedBox(width: 10),
+                Expanded(child: TextField(controller: otroSoftwareCtrl)),
+              ],
+            ),
+          ),
+          SizedBox(height: 20),
           ElevatedButton(
             onPressed: _onAceptar,
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF4C7ED6),
+              backgroundColor: Color(0xFF0B2A5A),
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              elevation: 0,
+              padding: EdgeInsets.symmetric(horizontal: 32, vertical: 14),
             ),
-            child: const Text(
-              'Aceptar',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-            ),
+            child: Text('Aceptar'),
           ),
-          const SizedBox(height: 30),
-          Container(height: 20, color: const Color(0xFF34495E)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCheck(String label, bool value, Function(bool) onChanged) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
-        children: [
-          Checkbox(
-            value: value,
-            onChanged: (val) => onChanged(val ?? false),
-          ),
-          Text(label,
-              style: const TextStyle(fontSize: 15, color: Color(0xFF2C3E50))),
+          SizedBox(height: 10),
+          Container(height: 10, color: const Color.fromARGB(255, 25, 0, 94)),
         ],
       ),
     );

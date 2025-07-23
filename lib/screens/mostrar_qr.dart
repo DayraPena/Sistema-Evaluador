@@ -20,7 +20,9 @@ class MostrarQR extends StatelessWidget {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     Random rnd = Random();
     return String.fromCharCodes(Iterable.generate(
-        8, (_) => chars.codeUnitAt(rnd.nextInt(chars.length))));
+      8,
+      (_) => chars.codeUnitAt(rnd.nextInt(chars.length)),
+    ));
   }
 
   @override
@@ -44,8 +46,7 @@ class MostrarQR extends StatelessWidget {
                 Image.asset('assets/images/T.png', width: 200),
                 Expanded(
                   child: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 10), // más a la izquierda
+                    padding: const EdgeInsets.only(left: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -100,19 +101,25 @@ class MostrarQR extends StatelessWidget {
                   Text('Materia: $tema'),
                   Text('Práctica: $practica'),
                   SizedBox(height: 30),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF34495E),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+                  Center(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            Color.fromARGB(255, 3, 39, 75), // Azul oscuro
+                        foregroundColor: Colors.white, // Texto blanco
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+                        textStyle: TextStyle(fontSize: 16),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => DocenteMenu()),
+                          (Route<dynamic> route) => false,
+                        );
+                      },
+                      child: Text('Cerrar'),
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => DocenteMenu()),
-                        (Route<dynamic> route) => false,
-                      );
-                    },
-                    child: Text('Cerrar'),
                   ),
                 ],
               ),

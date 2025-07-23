@@ -38,9 +38,10 @@ class CondensadoGrupos extends StatelessWidget {
                     Text(
                       'DOCENTE',
                       style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF34495E)),
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF34495E),
+                      ),
                     ),
                   ],
                 ),
@@ -69,6 +70,7 @@ class CondensadoGrupos extends StatelessWidget {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xFF0B2A5A), // azul fuerte
+                            foregroundColor: Colors.white, // texto blanco
                             padding: EdgeInsets.symmetric(
                                 horizontal: 24, vertical: 12),
                           ),

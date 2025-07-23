@@ -106,9 +106,11 @@ class _FormularioQRState extends State<FormularioQR> {
                     alignment: Alignment.centerRight,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 140, 176, 230),
+                        backgroundColor: Color.fromARGB(255, 6, 32, 70),
+                        foregroundColor: Colors.white, // 🔹 Letras blancas
                         padding:
                             EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+                        textStyle: TextStyle(fontSize: 16),
                       ),
                       onPressed: _generarQR,
                       child: Text('Generar QR'),

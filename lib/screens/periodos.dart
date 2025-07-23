@@ -10,113 +10,125 @@ class _PeriodosState extends State<Periodos> {
   String? semanas;
   String? anio;
   String? aula;
-  String? sistema;
 
   final periodos = ['ENERO-JUNIO', 'AGOSTO-DICIEMBRE', 'VERANO'];
-  final semanasList = ['16 SEMANAS', '4 SEMANAS', '6 SEMANAS'];
+  final semanasList = ['16 SEMANAS', '6 SEMANAS'];
   final anios = [for (var i = DateTime.now().year; i <= 2030; i++) '$i'];
-  final aulas = ['LC1', 'LC2', 'LC3', 'LC4', 'LC5', 'LC6', 'LC7'];
-  final sistemas = ['WINDOWS', 'LINUX'];
+  final aulas = [
+    'LC1',
+    'LC2',
+    'LC3',
+    'LC4',
+    'LC5',
+    'LC6',
+    'LC7(REDES)',
+    'CAAU',
+    '4-04',
+    '(INDUSTRIAL)'
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF5F5F5),
+      backgroundColor: const Color(0xFFF5F5F5),
       body: Column(
         children: [
           Container(
             height: 20,
-            color: Color(0xFF34495E),
+            color: const Color(0xFF34495E),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Image.asset('assets/images/T.png', width: 200),
-                Image.asset('assets/images/ITZ.png', width: 100),
+                Expanded(
+                  child: Column(
+                    children: const [
+                      Text(
+                        'TECNOLÓGICO\nNACIONAL DE MÉXICO',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF2C3E50),
+                          height: 1.3,
+                        ),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        'INSTITUTO TECNOLÓGICO DE ZACATEPEC',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF2C3E50),
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        'Abrir Periodos',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF34495E),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Image.asset('assets/images/ITZ.png', width: 90),
               ],
             ),
           ),
           Expanded(
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const Text(
-                    'TECNOLÓGICO\nNACIONAL DE MÉXICO',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF2C3E50),
-                      height: 1.3,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Column(
+                  children: [
+                    buildDropdown('Periodo', periodos, periodo, (value) {
+                      setState(() => periodo = value);
+                    }),
+                    const SizedBox(height: 15),
+                    buildDropdown('Semanas', semanasList, semanas, (value) {
+                      setState(() => semanas = value);
+                    }),
+                    const SizedBox(height: 15),
+                    buildDropdown('Año', anios, anio, (value) {
+                      setState(() => anio = value);
+                    }),
+                    const SizedBox(height: 15),
+                    buildDropdown('Aulas', aulas, aula, (value) {
+                      setState(() => aula = value);
+                    }),
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _actionButton('Iniciar Periodo', () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Periodo Iniciado')),
+                          );
+                          Navigator.pop(context);
+                        }),
+                        _actionButton('Finalizar Periodo', () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Periodo Finalizado')),
+                          );
+                          Navigator.pop(context);
+                        }),
+                      ],
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    'INSTITUTO TECNOLÓGICO DE ZACATEPEC',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF2C3E50),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Abrir Periodos',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF34495E),
-                    ),
-                  ),
-                  const SizedBox(height: 25),
-                  buildDropdown('Periodo', periodos, periodo, (value) {
-                    setState(() => periodo = value);
-                  }),
-                  const SizedBox(height: 15),
-                  buildDropdown('Semanas', semanasList, semanas, (value) {
-                    setState(() => semanas = value);
-                  }),
-                  const SizedBox(height: 15),
-                  buildDropdown('Año', anios, anio, (value) {
-                    setState(() => anio = value);
-                  }),
-                  const SizedBox(height: 15),
-                  buildDropdown('Aulas', aulas, aula, (value) {
-                    setState(() => aula = value);
-                  }),
-                  const SizedBox(height: 15),
-                  buildDropdown('Sistemas Operativos', sistemas, sistema,
-                      (value) {
-                    setState(() => sistema = value);
-                  }),
-                  const SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _actionButton('Iniciar Periodo', () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Periodo Iniciado')),
-                        );
-                        Navigator.pop(context);
-                      }),
-                      _actionButton('Finalizar Periodo', () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Periodo Finalizado')),
-                        );
-                        Navigator.pop(context);
-                      }),
-                    ],
-                  ),
-                  const SizedBox(height: 30),
-                ],
+                    const SizedBox(height: 30),
+                  ],
+                ),
               ),
             ),
           ),
           Container(
             height: 20,
-            color: Color(0xFF34495E),
+            color: const Color(0xFF34495E),
           ),
         ],
       ),
@@ -131,19 +143,20 @@ class _PeriodosState extends State<Periodos> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              style:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           const SizedBox(height: 5),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-              color: Color(0xFFEAEAEA),
+              color: const Color(0xFFEAEAEA),
               borderRadius: BorderRadius.circular(30),
             ),
             child: DropdownButton<String>(
               isExpanded: true,
               value: selected,
               hint: Text('Seleccione $label'),
-              underline: SizedBox(),
+              underline: const SizedBox(),
               items: items
                   .map((item) =>
                       DropdownMenuItem(value: item, child: Text(item)))
@@ -161,9 +174,9 @@ class _PeriodosState extends State<Periodos> {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         elevation: 0,
-        backgroundColor: Color(0xFFEAEAEA),
-        foregroundColor: Color(0xFF2C3E50),
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        backgroundColor: const Color(0xFFEAEAEA),
+        foregroundColor: const Color(0xFF2C3E50),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
